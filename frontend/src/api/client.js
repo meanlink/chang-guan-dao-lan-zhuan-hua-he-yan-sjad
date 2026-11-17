@@ -9,3 +9,5 @@ export async function download(id,format){
  if(!r.ok)throw new Error('下载失败，请重试');
  const u=URL.createObjectURL(await r.blob()),a=document.createElement('a');a.href=u;a.download='分析归档-'+id+'.'+format;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
 }
+export async function fetchFile(path){const r=await fetch('/api'+path,{headers:{Authorization:'Bearer '+session.token}});if(!r.ok){let d=await r.json().catch(()=>({detail:'下载失败，请重试'}));throw new Error(typeof d.detail==='string'?d.detail:'下载失败，请重试');}return r.blob();}
+export function saveBlob(blob,filename){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
